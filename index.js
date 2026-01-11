@@ -216,7 +216,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve('index.html'));
 });
 
-export const handler = serverless(app);
+const handler = serverless(app);
 
 // Local development server
 if (process.env.NODE_ENV !== 'production') {
@@ -224,3 +224,5 @@ if (process.env.NODE_ENV !== 'production') {
     console.log(`Server is running on port ${PORT}`);
   });
 }
+
+export default handler;
