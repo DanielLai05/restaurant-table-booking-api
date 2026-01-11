@@ -3,6 +3,11 @@ import cors from 'cors';
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 import path from 'path';
+import serverless from 'serverless-http';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const app = express();
@@ -212,10 +217,14 @@ app.delete('/reservation/:id', async (req, res) => {
 
 
 app.get('/', (req, res) => {
-  // res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
-  res.send('Welcome to Restaurant Table Booking Api');
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+export const handler = serverless(app);
+
+// Local development server
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
