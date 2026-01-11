@@ -18,22 +18,6 @@ const pool = new Pool({
   },
 })
 
-async function getPostgresqlVersion() {
-
-  const client = await pool.connect();
-  try {
-    const response = await client.query('SELECT version()');
-    console.log(response.rows[0]);
-  } catch (error) {
-    console.error(error);
-  } finally {
-    client.release();
-  }
-}
-
-getPostgresqlVersion();
-
-
 app.get('/users/:id', async (req, res) => {
   const id = req.params.id;
   const client = await pool.connect();
@@ -217,12 +201,5 @@ app.get('/', (req, res) => {
 });
 
 const handler = serverless(app);
-
-// Local development server
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-}
 
 export default handler;
