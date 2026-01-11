@@ -4,10 +4,7 @@ import { Pool } from 'pg';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const PORT = process.env.PORT || 3000
+import serverless from 'serverless-http';
 
 dotenv.config();
 const app = express();
@@ -17,7 +14,7 @@ app.use(cors());
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    require: true,
+    rejectUnauthorized: false,
   },
 })
 
@@ -216,10 +213,7 @@ app.delete('/reservation/:id', async (req, res) => {
 
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, "/index.html"));
-  // res.send('Welcome To Restaurant Table Booking Api')
+  res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log('App is listening to port 3000');
-})
+export const handler = serverless(app);
