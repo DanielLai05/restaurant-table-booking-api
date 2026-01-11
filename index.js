@@ -5,8 +5,8 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const app = express();
@@ -215,7 +215,8 @@ app.delete('/reservation/:id', async (req, res) => {
 
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, "/index.html"));
+  // res.sendFile(path.join(__dirname, "/index.html"));
+  res.send('Welcome To Restaurant Table Booking Api')
 });
 
 app.listen(3000, () => {
