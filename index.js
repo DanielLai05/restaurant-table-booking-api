@@ -5,8 +5,9 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from "url";
 
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const PORT = process.env.PORT || 3000
 
 dotenv.config();
 const app = express();
@@ -215,10 +216,10 @@ app.delete('/reservation/:id', async (req, res) => {
 
 
 app.get('/', (req, res) => {
-  // res.sendFile(path.join(__dirname, "/index.html"));
-  res.send('Welcome To Restaurant Table Booking Api')
+  res.sendFile(path.join(__dirname, "/index.html"));
+  // res.send('Welcome To Restaurant Table Booking Api')
 });
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log('App is listening to port 3000');
 })
