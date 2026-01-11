@@ -4,10 +4,6 @@ import { Pool } from 'pg';
 import dotenv from 'dotenv';
 import path from 'path';
 import serverless from 'serverless-http';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const app = express();
@@ -217,7 +213,7 @@ app.delete('/reservation/:id', async (req, res) => {
 
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.resolve('index.html'));
 });
 
 export const handler = serverless(app);
