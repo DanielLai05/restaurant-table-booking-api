@@ -1,9 +1,8 @@
-import express, { response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 import path from 'path';
-import { fileURLToPath } from "url";
 import serverless from 'serverless-http';
 
 dotenv.config();
@@ -151,7 +150,7 @@ app.put('/reservation', async (req, res) => {
     return res.status(400).json({ message: "Please fulfill all required fields" });
   }
 
-  const client = pool.connect();
+  const client = await pool.connect();
   try {
     const query =
       'UPDATE bookings SET date = $1, number_of_guest = $2, full_name = $3, email = $4, phone_number = $5, description = $6, title = $7 WHERE id = $8 RETURNING *;';
@@ -167,7 +166,7 @@ app.put('/reservation', async (req, res) => {
       id
     ];
 
-    const { rows } = await (await client).query(query, data);
+    const { rows } = await client.query(query, data);
 
     if (rows.length === 0) {
       return res.status(404).json({ message: "Reservation not found" });
@@ -217,3 +216,11 @@ app.get('/', (req, res) => {
 });
 
 export const handler = serverless(app);
+
+// Start server locally
+const PORT = process.env.PORT || 5000;
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
