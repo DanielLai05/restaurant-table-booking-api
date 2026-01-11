@@ -3,7 +3,6 @@ import cors from 'cors';
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 import path from 'path';
-import serverless from 'serverless-http';
 
 dotenv.config();
 const app = express();
@@ -17,6 +16,22 @@ const pool = new Pool({
     rejectUnauthorized: false,
   },
 })
+
+async function getPostgresqlVersion() {
+
+  const client = await pool.connect();
+  try {
+    const response = await client.query('SELECT version()');
+    console.log(response.rows[0]);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    client.release();
+  }
+}
+
+getPostgresqlVersion();
+
 
 app.get('/users/:id', async (req, res) => {
   const id = req.params.id;
@@ -197,21 +212,10 @@ app.delete('/reservation/:id', async (req, res) => {
 
 
 app.get('/', (req, res) => {
-  res.send(`
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Jerome Restaurant API</title>
-    </head>
-    <body>
-      <h1>Welcome To Jerome Restaurant API</h1>
-    </body>
-    </html>
-  `);
+  // res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
+  res.send('Welcome to Restaurant Table Booking Api');
 });
 
-const handler = serverless(app);
-
-export default handler;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
