@@ -3,12 +3,12 @@ import cors from 'cors';
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 import path from 'path';
-import serverless from 'serverless-http';
 
 dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(cors());
+const PORT = process.env.PORT || 5000
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -212,15 +212,10 @@ app.delete('/reservation/:id', async (req, res) => {
 
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
+  // res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
+  res.send('Welcome to Restaurant Table Booking Api');
 });
 
-export const handler = serverless(app);
-
-// Start server locally
-const PORT = process.env.PORT || 5000;
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-}
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
