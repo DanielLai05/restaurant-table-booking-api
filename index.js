@@ -197,7 +197,19 @@ app.delete('/reservation/:id', async (req, res) => {
 
 
 app.get('/', (req, res) => {
-  res.sendFile(path.resolve('index.html'));
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Jerome Restaurant API</title>
+    </head>
+    <body>
+      <h1>Welcome To Jerome Restaurant API</h1>
+    </body>
+    </html>
+  `);
 });
 
 const handler = serverless(app);
