@@ -213,7 +213,22 @@ app.delete('/reservation/:id', async (req, res) => {
 
 app.get('/', (req, res) => {
   // res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
-  res.send('Welcome to Restaurant Table Booking Api');
+  res.send(`
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>Welcome To Jerome Restaurant API</h1>
+</body>
+
+</html>
+  `);
 });
 
 app.listen(PORT, () => {
